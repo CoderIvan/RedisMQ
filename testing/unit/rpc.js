@@ -19,16 +19,18 @@ describe('RPC', () => {
 		}
 	}
 
-	before(async() => {
-		redisClient = redis.createClient(redisOptions)
+	before(async () => {
+		if (!redisClient) {
+			redisClient = redis.createClient(redisOptions)
+		}
 		await checkEmpty()
 	})
 
-	beforeEach(() => checkEmpty())
+	beforeEach(() => redisClient.flushdbAsync())
 
 	afterEach(() => redisClient.flushdbAsync())
 
-	after(async() => {
+	after(async () => {
 		await checkEmpty()
 		if (redisClient) {
 			redisClient.end(false)
@@ -41,7 +43,7 @@ describe('RPC', () => {
 	], ({ mode, Client, Server }) => {
 		describe(`${mode}`, () => {
 			describe('Client', () => {
-				it('Invoke && Timeout', async() => {
+				it('Invoke && Timeout', async () => {
 					const client = new Client(redisOptions)
 					await client.invoke('req', { content: 'Hello World' })
 						.catch((err) => {
@@ -50,7 +52,7 @@ describe('RPC', () => {
 					client.close()
 				})
 
-				it('Invoke && OverFlow', async() => {
+				it('Invoke && OverFlow', async () => {
 					const client = new Client(redisOptions, {}, { push_queue_size: 5 })
 					const promiseList = []
 					for (let i = 0; i < 10; i += 1) {
@@ -63,7 +65,7 @@ describe('RPC', () => {
 					client.close()
 				})
 
-				it('Invoke && Check data structure in Redis', async() => {
+				it('Invoke && Check data structure in Redis', async () => {
 					const client = new Client(redisOptions)
 					const blockRedisClient = redisClient.duplicate()
 
@@ -91,7 +93,7 @@ describe('RPC', () => {
 					blockRedisClient.end(false)
 				})
 
-				it('Invoke && Rename data structure && Check data structure in Redis', async() => {
+				it('Invoke && Rename data structure && Check data structure in Redis', async () => {
 					const client = new Client(redisOptions, {
 						replyTo_key: 'res_queue_name',
 						correlationId_key: 'datagrams_id',
@@ -124,7 +126,7 @@ describe('RPC', () => {
 					blockRedisClient.end(false)
 				})
 
-				it('Invoke && Response', async() => {
+				it('Invoke && Response', async () => {
 					const client = new Client(redisOptions)
 					const blockRedisClient = redisClient.duplicate()
 
@@ -148,7 +150,7 @@ describe('RPC', () => {
 			})
 
 			describe('Server', () => {
-				it('Process', () => async() => {
+				it('Process', () => async () => {
 					const server = new Server(redisOptions)
 
 					const replyTo = ['rpc', 'res', server.getUUID()].join(':')
@@ -156,7 +158,7 @@ describe('RPC', () => {
 					const requestContent = { content: 'Hello World' }
 					const responseContent = { content: 'Get it' }
 
-					server.process('req', async(request) => {
+					server.process('req', async (request) => {
 						expect(request).to.have.property('timestamp').and.closeTo(Date.now(), 200)
 						expect(request).to.have.property('data').and.eql(requestContent)
 						return responseContent
@@ -184,7 +186,7 @@ describe('RPC', () => {
 					blockRedisClient.end(false)
 				})
 
-				it('Process && Rename', async() => {
+				it('Process && Rename', async () => {
 					const server = new Server(redisOptions, {
 						replyTo_key: 'res_queue_name',
 						correlationId_key: 'datagrams_id',
@@ -196,7 +198,7 @@ describe('RPC', () => {
 					const requestContent = { content: 'Hello World' }
 					const responseContent = { content: 'Get it' }
 
-					server.process('req', async(request) => {
+					server.process('req', async (request) => {
 						expect(request).to.have.property('timestamp').and.closeTo(Date.now(), 200)
 						expect(request).to.have.property('datagrams').and.eql(requestContent)
 						return responseContent
@@ -226,14 +228,14 @@ describe('RPC', () => {
 			})
 
 			describe('Joint', () => {
-				it('Base', async() => {
+				it('Base', async () => {
 					const server = new Server(redisOptions)
 					const client = new Client(redisOptions)
 
 					const requestContent = { content: 'Hello World' }
 					const responseContent = { content: 'Get it' }
 
-					server.process('req', async(request) => {
+					server.process('req', async (request) => {
 						expect(request).to.have.property('timestamp').and.closeTo(Date.now(), 200)
 						expect(request).to.have.property('data').and.eql(requestContent)
 						return responseContent
@@ -246,7 +248,7 @@ describe('RPC', () => {
 					client.close()
 				})
 
-				it('Rename', async() => {
+				it('Rename', async () => {
 					const server = new Server(redisOptions, {
 						replyTo_key: 'res_queue_name',
 						correlationId_key: 'datagrams_id',
@@ -261,7 +263,7 @@ describe('RPC', () => {
 					const requestContent = { content: 'Hello World' }
 					const responseContent = { content: 'Get it' }
 
-					server.process('req', async(request) => {
+					server.process('req', async (request) => {
 						expect(request).to.have.property('timestamp').and.closeTo(Date.now(), 200)
 						expect(request).to.have.property('datagrams').and.eql(requestContent)
 						return responseContent

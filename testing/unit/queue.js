@@ -20,11 +20,13 @@ describe('Queue', () => {
 	}
 
 	before(async () => {
-		redisClient = redis.createClient(redisOptions)
+		if (!redisClient) {
+			redisClient = redis.createClient(redisOptions)
+		}
 		await checkEmpty()
 	})
 
-	beforeEach(() => checkEmpty())
+	beforeEach(() => redisClient.flushdbAsync())
 
 	afterEach(() => redisClient.flushdbAsync())
 
@@ -52,9 +54,7 @@ describe('Queue', () => {
 				const p = new Promise((resolve, reject) => {
 					server.process(queueName, resolve, reject)
 				})
-
 				await client.send(queueName, content)
-
 				const message = await p
 				expect(message).to.not.be.null // eslint-disable-line no-unused-expressions
 				expect(message).to.have.property('data').and.eql(content)
