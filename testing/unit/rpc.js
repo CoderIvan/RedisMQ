@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies, no-unused-expressions, max-len */
+/* eslint-disable no-unused-expressions */
 const { expect } = require('chai')
 const redis = require('redis')
 const Bluebird = require('bluebird')
@@ -153,8 +153,8 @@ describe('RPC', () => {
 				it('Process', () => async () => {
 					const server = new Server(redisOptions)
 
-					const replyTo = ['rpc', 'res', server.getUUID()].join(':')
-					const correlationId = server.getUUID()
+					const replyTo = ['rpc', 'res', Server.getUUID()].join(':')
+					const correlationId = Server.getUUID()
 					const requestContent = { content: 'Hello World' }
 					const responseContent = { content: 'Get it' }
 
@@ -193,8 +193,8 @@ describe('RPC', () => {
 						data_key: 'datagrams',
 					})
 
-					const replyTo = ['rpc', 'res', server.getUUID()].join(':')
-					const correlationId = server.getUUID()
+					const replyTo = ['rpc', 'res', Server.getUUID()].join(':')
+					const correlationId = Server.getUUID()
 					const requestContent = { content: 'Hello World' }
 					const responseContent = { content: 'Get it' }
 

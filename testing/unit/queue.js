@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies, no-unused-expressions, max-len */
 const { expect } = require('chai')
 const redis = require('redis')
 const Bluebird = require('bluebird')
