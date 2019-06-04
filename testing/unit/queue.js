@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { expect } = require('chai')
 const redis = require('redis')
 const Bluebird = require('bluebird')

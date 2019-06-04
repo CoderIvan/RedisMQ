@@ -2,6 +2,7 @@
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { argv } = require('yargs')
 
 const redisOptions = require('../../testing/config')
@@ -27,11 +28,11 @@ if (cluster.isMaster) {
 		for (let i = loopTimes; i > 0; i -= 1) {
 			const now = Date.now()
 			await Promise.all(Array.from({ length: concurrenceTimes }).map(() => client.invoke(queueName, 'Hello World'))) // eslint-disable-line no-await-in-loop
-			const total_time = Date.now() - now
-			const cost_time = total_time / concurrenceTimes
-			const qps = Math.floor((1 / cost_time) * 1000)
+			const totalTime = Date.now() - now
+			const costTime = totalTime / concurrenceTimes
+			const qps = Math.floor((1 / costTime) * 1000)
 			console.log('(%d/%d) Times = %d >> Total Time = %dms >> Cost Time = %dms >> QPS = %d',
-				(loopTimes - i) + 1, loopTimes, concurrenceTimes, total_time, cost_time, qps)
+				(loopTimes - i) + 1, loopTimes, concurrenceTimes, totalTime, costTime, qps)
 		}
 		client.close()
 		workers.forEach((worker) => {

@@ -1,4 +1,4 @@
 module.exports = {
 	host: 'localhost',
-	db: 15,
+	db: 0,
 }
