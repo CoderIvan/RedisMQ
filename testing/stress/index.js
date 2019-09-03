@@ -13,7 +13,7 @@ const queueName = 'test'
 if (cluster.isMaster) {
 	(async () => {
 		const workers = Array.from({ length: numCPUs }).map(() => cluster.fork())
-		await Promise.all(workers.map(worker => new Promise((resolve) => {
+		await Promise.all(workers.map((worker) => new Promise((resolve) => {
 			worker.once('message', (message) => {
 				if (message === 'finish') {
 					resolve()

@@ -4,14 +4,13 @@
 const { expect } = require('chai')
 const redis = require('redis')
 const Bluebird = require('bluebird')
-const _ = require('lodash')
 
 const redisOptions = require('../../testing/config')
 const { BlockClient, BlockServer, BatchClient, BatchServer } = require('../..')
 
 Bluebird.promisifyAll([redis.RedisClient, redis.Multi])
 
-describe('RPC', () => {
+describe.only('RPC', () => {
 	let redisClient
 
 	async function checkEmpty() {
@@ -37,12 +36,12 @@ describe('RPC', () => {
 		if (redisClient) {
 			redisClient.end(false)
 		}
-	})
+	});
 
-	_.forEach([
+	[
 		{ mode: 'Block', Client: BlockClient, Server: BlockServer },
 		{ mode: 'Batch', Client: BatchClient, Server: BatchServer },
-	], ({ mode, Client, Server }) => {
+	].forEach(({ mode, Client, Server }) => {
 		describe(`${mode}`, () => {
 			describe('Client', () => {
 				it('Invoke && Timeout', async () => {

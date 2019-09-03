@@ -1,6 +1,6 @@
 {
   "name": "redismq",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "brickyard-module-type": "backend",
   "description": "The Message service which based on Redis",
   "main": "index.js",
@@ -11,16 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.5",
-    "lodash": "^4.17.11",
     "redis": "^2.8.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "yargs": "^13.2.4",
-    "mocha": "^6.1.4",
+    "yargs": "^14.0.0",
+    "mocha": "^6.2.0",
     "chai": "^4.2.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint": "^5.3.0",
-    "eslint-plugin-import": "^2.14.0"
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2"
   }
 }

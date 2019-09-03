@@ -3,7 +3,6 @@
 const { expect } = require('chai')
 const redis = require('redis')
 const Bluebird = require('bluebird')
-const _ = require('lodash')
 
 const redisOptions = require('../../testing/config')
 const { BlockClient, BlockServer, BatchClient, BatchServer } = require('../../')
@@ -36,12 +35,12 @@ describe('Queue', () => {
 		if (redisClient) {
 			redisClient.end(false)
 		}
-	})
+	});
 
-	_.forEach([
+	[
 		{ mode: 'Block', Client: BlockClient, Server: BlockServer },
 		{ mode: 'Batch', Client: BatchClient, Server: BatchServer },
-	], ({ mode, Client, Server }) => {
+	].forEach(({ mode, Client, Server }) => {
 		describe(`${mode}`, () => {
 			it('Base', async () => {
 				const client = new Client(redisOptions)
