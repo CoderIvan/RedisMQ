@@ -1,12 +1,12 @@
 {
   "name": "@z-ivan/redismq",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "The Message service which based on Redis",
   "main": "index.js",
   "repository": {
-		"type": "git",
-		"url": "https://github.com/CoderIvan/RedisMQ"
-	},
+    "type": "git",
+    "url": "https://github.com/CoderIvan/RedisMQ"
+  },
   "scripts": {
     "test": "mocha testing/unit/**/*.js"
   },
@@ -15,14 +15,14 @@
   "dependencies": {
     "bluebird": "^3.7.2",
     "redis": "^3.0.2",
-    "uuid": "^7.0.2"
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "yargs": "^15.3.1",
-    "mocha": "^7.1.1",
+    "mocha": "^8.0.1",
     "chai": "^4.2.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-import": "^2.20.1"
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint": "^7.2.0",
+    "eslint-plugin-import": "^2.21.2"
   }
 }
